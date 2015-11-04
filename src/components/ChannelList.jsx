@@ -1,36 +1,74 @@
 import React from 'react';
 import Channel from './Channel.jsx';
 import mui from 'material-ui';
+import connectToStores from 'alt/utils/connectToStores';
+import ChatStore from '../stores/ChatStore';
 
-const {Card, List} = mui;
 
+const {Card, List, CircularProgress} = mui;
+
+
+@connectToStores
 class ChannelList extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            channels: [
-                'Dogs',
-                'Cats'
-            ]
-        };
+        ChatStore.getChannels();
+    }
+
+    static getStores() {
+        return [ChatStore];
+    }
+
+    static getPropsFromStores() {
+        return ChatStore.getState();
     }
 
     render() {
-        var channelNodes = this.state.channels.map((channel) => {
-            return (
-                <Channel channel={channel} />
-            );
-        });
 
-        return (
-            <Card style={{
-                flexGrow: 1
-            }}>
-                <List>
-                    {channelNodes}
-                </List>
-            </Card>
-        );
+        var channelNodes = _(this.props.channels)
+            .keys()
+            .map((k) => {
+                let channel = this.props.channels[k];
+                return (
+                    <Channel channel={channel.name}
+                             key={channel.key}
+                             selected={channel.selected} />
+                );
+            })
+            .value();
+
+
+        if (this.props.channels) {
+
+            return (
+                <Card style={{
+                    flexGrow: 1
+                }}>
+                    <List>
+                        {channelNodes}
+                    </List>
+                </Card>
+            );
+        } else {
+
+            return (
+                <Card style={{
+                    flexGrow: 1
+                }}>
+                    <CircularProgress
+                        mode="indeterminate"
+                        style={{
+                            paddingTop: '20px',
+                            paddingBottom: '20px',
+                            margin: '0 auto',
+                            display: 'block',
+                            width: '60px'
+                        }}
+                    />
+                </Card>
+            )
+        }
+
     }
 }
 

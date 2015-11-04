@@ -25,12 +25,12 @@ class Login extends React.Component {
                 <CardText style={{
                     'textAlign': 'center'
                 }}>
-                    To start chatting away, please log in with your Google Account.
+                    To start chatting away, please log in with your Github Account.
                 </CardText>
 
                 <RaisedButton style={{
                     display: 'block'
-                    }} onClick={this.onClick.bind(this)} label="Log in with Google" primary={true} />
+                    }} onClick={this.onClick.bind(this)} label="Log in with Github" primary={true} />
             </Card>
         )
     }

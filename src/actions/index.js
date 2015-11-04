@@ -4,6 +4,13 @@ import Firebase from 'firebase';
 
 class Actions {
 
+    constructor() {
+        this.generateActions(
+            'channelsReceived',
+            'channelsFailed'
+        );
+    }
+
     login(args) {
         return (dispatch) => {
             let firebaseRef = new Firebase('https://react-stack-ben.firebaseio.com/messages');
