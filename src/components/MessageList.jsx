@@ -3,42 +3,46 @@ import Message from './Message.jsx';
 import mui from 'material-ui';
 import Firebase from 'firebase';
 import _ from 'lodash';
+import connectToStores from 'alt/utils/connectToStores';
+import ChatStore from '../stores/ChatStore';
 
-const {Card, List} = mui;
+const {Card, List, CircularProgress} = mui;
 
+@connectToStores
 class MessageList extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            messages: {}
-        };
+    }
 
-        this.firebaseRef = new Firebase('https://react-stack-ben.firebaseio.com/messages');
-        this.firebaseRef.on("child_added", (msg) => {
-            if(this.state.messages[msg.key()]) {
-                return;
-            }
+    static getStores() {
+        return [ChatStore];
+    }
 
-            let msgVal = msg.val();
-            msgVal.key = msg.key();
-            this.state.messages[msgVal.key] = msgVal;
-
-            this.setState({ messages: this.state.messages });
-        });
-
-        this.firebaseRef.on("child_removed", (msg) => {
-            let key = msg.key();
-            delete this.state.messages[key];
-            this.setState({messages: this.state.messages});
-        } )
+    static getPropsFromStores() {
+        return ChatStore.getState();
     }
 
     render() {
-        let messageNodes = _.values(this.state.messages).map((message) => {
-            return (
-                <Message message={message.message} />
-            );
-        });
+        let messageNodes = null;
+
+        if (!this.props.messagesLoading) {
+
+            messageNodes = _.values(this.props.messages).map((message) => {
+                return (
+                    <Message message={message.message} key={message.key} profilePic={message.profilePic} />
+                );
+            });
+        } else {
+            messageNodes = <CircularProgress mode="indeterminate"
+                                             style={{
+                                                paddingTop: 20,
+                                                paddingBottom: 20,
+                                                margin: '0 auto',
+                                                display: 'block',
+                                                width: '60px'
+                                             }} />
+        }
+
 
         return (
             <Card style={{
@@ -50,6 +54,7 @@ class MessageList extends React.Component {
                 </List>
             </Card>
         );
+
     }
 }
 
