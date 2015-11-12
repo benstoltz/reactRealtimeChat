@@ -33,7 +33,6 @@ class App extends React.Component {
     };
 
 
-
     getChildContext() {
         return {
             muiTheme: ThemeManager.getMuiTheme(personalTheme)
@@ -45,7 +44,7 @@ class App extends React.Component {
 
         if (this.props.user) {
             view = (
-                <div>
+                <section>
                     <div style={{
                         display: 'flex',
                         flexFlow: 'row',
@@ -57,17 +56,17 @@ class App extends React.Component {
                         <MessageList />
                     </div>
                     <MessageBox />
-                </div>
+                </section>
             );
         } else {
             view = <Login />;
         }
 
        return (
-           <div>
-               <AppBar title="Awesome Chat App" />
+           <main>
+               <AppBar title="Awesome awesome" />
                {view}
-           </div>
+           </main>
        );
     }
 }

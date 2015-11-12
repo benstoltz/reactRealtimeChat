@@ -21,13 +21,12 @@ let MessageSource = {
                     resolve(messages);
 
 
-                    //setTimeout(()=> {
-                    //    firebaseRef.on("child_added", ((msg) => {
-                    //        let msgVal = msg.val();
-                    //        msgVal.key = msg.key();
-                    //        Actions.messageReceived(msgVal);
-                    //    }));
-                    //}, 10);
+
+                    firebaseRef.on("child_added", ((msg) => {
+                        let msgVal = msg.val();
+                        msgVal.key = msg.key();
+                        Actions.messageReceived(msgVal);
+                    }));
 
                 })
             });
@@ -36,28 +35,28 @@ let MessageSource = {
         success: Actions.messagesReceived,
         error: Actions.messagesFailed,
         loading: Actions.messagesLoading
-    }
+    },
 
-    //sendMessage: {
-    //    remote(state){
-    //        return new Promise((resolve, reject)=> {
-    //            if(!firebaseRef){
-    //                return resolve();
-    //            }
-    //
-    //            firebaseRef.push({
-    //                "message": state.message,
-    //                "date": new Date().toUTCString(),
-    //                "author": state.user.google.displayName,
-    //                "userId": state.user.uid,
-    //                "profilePic": state.user.google.profileImageURL
-    //            });
-    //            resolve();
-    //        });
-    //    },
-    //    success: Actions.messageSendSuccess,
-    //    error: Actions.messageSendError
-    //}
+    sendMessage: {
+        remote(state){
+            return new Promise((resolve, reject)=> {
+                if(!firebaseRef){
+                    return resolve();
+                }
+
+                firebaseRef.push({
+                    "message": state.message,
+                    "date": new Date().toUTCString(),
+                    "author": state.user.github.displayName,
+                    "userId": state.user.uid,
+                    "profilePic": state.user.github.profileImageURL
+                });
+                resolve();
+            });
+        },
+        success: Actions.messageSendSuccess,
+        error: Actions.messageSendError
+    }
 };
 
 export default MessageSource;

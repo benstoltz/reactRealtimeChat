@@ -1,7 +1,7 @@
 import React from 'react';
 import mui from 'material-ui';
 import trim from 'trim';
-import Firebase from 'firebase';
+import Actions from '../actions';
 
 const {Card} = mui;
 
@@ -13,7 +13,7 @@ class MessageBox extends React.Component {
             message: ''
         }
 
-        this.firebaseRef = new Firebase("https://react-stack-ben.firebaseio.com/messages");
+
     }
 
     onChange(evt) {
@@ -26,9 +26,7 @@ class MessageBox extends React.Component {
         if(evt.keyCode === 13 && trim(evt.target.value) != '') {
             evt.preventDefault();
 
-            this.firebaseRef.push({
-                message: this.state.message
-            });
+            Actions.sendMessage(this.state.message);
 
             this.setState({
                 message: ''

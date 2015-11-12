@@ -11,7 +11,11 @@ class Actions {
             'messagesReceived',
             'messagesFailed',
             'channelOpened',
-            'messagesLoading'
+            'messagesLoading',
+            'sendMessage',
+            'messageSendSuccess',
+            'messageSendError',
+            'messageReceived'
         );
     }
 
